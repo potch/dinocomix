@@ -24,7 +24,16 @@
     </style>
   </head>
   <body>
-    <div id="comic"></div>
+    <div id="comic">
+      <h1>URL ARGUMENTS</h1>
+      <pre>
+c:    comic #
+p:    panel #
+auto: 1 or 0, whether or not to advance through the comic
+
+example:  http://potch.github.io/dinocomix/?c=2498&p=6&auto=0
+      </pre>
+    </div>
     <script src="node_modules/js-snippets/snippets.js"></script>
     <script>
       var params = snippets.queryParams(location.href);
@@ -58,6 +67,10 @@
             el.style.backgroundImage = url;
             break;
         }
+      }
+
+      if (id) {
+        el.innerHTML = "";
       }
 
       if (auto) {
