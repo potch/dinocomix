@@ -1,3 +1,4 @@
+<!-- Dinosaur Comics 10 Foot Status: A birthday present for Chris Lonnen -->
 <!doctype html>
 <html>
   <head>
@@ -60,8 +61,10 @@
     </style>
   </head>
   <body>
+
     <div id="comic">
     </div>
+
     <pre id="halp">
       <h1>URL ARGUMENTS</h1>
       <pre>
@@ -71,6 +74,7 @@ auto: set this to pretty much anything for slideshow mode
 
 example:  <a href="http://potch.github.io/dinocomix/?c=2498&p=6">http://potch.github.io/dinocomix/?c=2498&p=6</a>
     </pre>
+
     <script src="node_modules/js-snippets/snippets.js"></script>
     <script>
       var params = snippets.queryParams(location.href);
@@ -107,7 +111,11 @@ example:  <a href="http://potch.github.io/dinocomix/?c=2498&p=6">http://potch.gi
             break;
         }
 
-        setTimeout(function() {
+        // scale up our image all pretty like
+        setTimeout(rescaleImage, 0);
+      }
+
+      function rescaleImage() {
           var eWid = el.offsetWidth;
           var eHgt = el.offsetHeight;
           var wWid = window.innerWidth;
@@ -123,13 +131,14 @@ example:  <a href="http://potch.github.io/dinocomix/?c=2498&p=6">http://potch.gi
           el.style.MozTransform = transform;
           el.style.webkitTransform = transform;
           el.style.msTransform = transform;
-        }, 0);
       }
 
+      // hide the help text if the user specced a comic.
       if (id) {
         document.querySelector('#halp').style.display = 'none';
       }
 
+      // slideshow mode
       if (auto) {
         panel = 1;
         setInterval(function() {
