@@ -8,32 +8,69 @@
       body {
         background: #000;
       }
-      div {
+      #comic {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
       }
-      div.p1 {
-
+      #comic.p1 {
+        width: 244px;
+        height: 244px;
+        background-position: 0 0;
+      }
+      #comic.p2 {
+        width: 132px;
+        height: 244px;
+        background-position: -242px 0;
+      }
+      #comic.p3 {
+        width: 362px;
+        height: 244px;
+        background-position: -373px 0;
+      }
+      #comic.p4 {
+        width: 196px;
+        height: 244px;
+        background-position: 0 -242px;
+      }
+      #comic.p5 {
+        width: 300px;
+        height: 244px;
+        background-position: -194px -242px;
+      }
+      #comic.p6 {
+        width: 243px;
+        height: 244px;
+        background-position: -492px -242px;
+      }
+      #halp {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 1em;
+        font-size: 16px;
       }
     </style>
   </head>
   <body>
     <div id="comic">
+    </div>
+    <pre id="halp">
       <h1>URL ARGUMENTS</h1>
       <pre>
-c:    comic #
-p:    panel #
-auto: 1 or 0, whether or not to advance through the comic
+c:    comic # (the number on the image file)
+p:    panel # (1-6)
+auto: set this to pretty much anything for slideshow mode
 
-example:  http://potch.github.io/dinocomix/?c=2498&p=6&auto=0
-      </pre>
-    </div>
+example:  <a href="http://potch.github.io/dinocomix/?c=2498&p=6">http://potch.github.io/dinocomix/?c=2498&p=6</a>
+    </pre>
     <script src="node_modules/js-snippets/snippets.js"></script>
     <script>
       var params = snippets.queryParams(location.href);
@@ -41,36 +78,56 @@ example:  http://potch.github.io/dinocomix/?c=2498&p=6&auto=0
       var panel = (params.p||0)|0;
       var auto = params.auto;
       var el = document.querySelector('#comic');
-      var url = 'url(http://www.qwantz.com/comics/comic2-' + id + '.png)';
+      el.style.backgroundImage = 'url(http://www.qwantz.com/comics/comic2-' + id + '.png)';
 
       function go(p) {      
         switch (panel) {
           case 1:
-            el.style.backgroundImage = '-moz-image-rect(' + url + ', 0, 244, 244, 0)';
+            el.className = 'p1';
             break;
           case 2:
-            el.style.backgroundImage = '-moz-image-rect(' + url + ', 0, 375, 244, 242)';
+            el.className = 'p2';
             break;
           case 3:
-            el.style.backgroundImage = '-moz-image-rect(' + url + ', 0, 735, 244, 373)';
+            el.className = 'p3';
             break;
           case 4:
-            el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 196, 487, 0)';
+            el.className = 'p4';
+            // el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 196, 487, 0)';
             break;
           case 5:
-            el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 494, 487, 194)';
+            el.className = 'p5';
+            // el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 494, 487, 194)';
             break;
           case 6:
-            el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 735, 487, 492)';
+            el.className = 'p6';
             break;
           default:
-            el.style.backgroundImage = url;
+            el.className = '';
             break;
         }
+
+        setTimeout(function() {
+          var eWid = el.offsetWidth;
+          var eHgt = el.offsetHeight;
+          var wWid = window.innerWidth;
+          var wHgt = window.innerHeight;
+
+          if (eWid/eHgt > wWid / wHgt) {
+            var transform = 'translate(-50%,-50%) scale(' + wWid/eWid + ')';
+          } else {
+            var transform = 'translate(-50%,-50%) scale(' + wHgt/eHgt + ')';
+          }
+
+          el.style.transform = transform;
+          el.style.MozTransform = transform;
+          el.style.webkitTransform = transform;
+          el.style.msTransform = transform;
+        }, 0);
       }
 
       if (id) {
-        el.innerHTML = "";
+        document.querySelector('#halp').style.display = 'none';
       }
 
       if (auto) {
@@ -79,7 +136,7 @@ example:  http://potch.github.io/dinocomix/?c=2498&p=6&auto=0
           panel = panel + 1;
           if (panel > 6) panel = 1;
           go(panel);
-        }, 5000);
+        }, 10000);
         go(panel);
       } else {
         go(panel);
