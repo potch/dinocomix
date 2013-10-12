@@ -31,6 +31,11 @@
         height: 244px;
         background-position: -242px 0;
       }
+      #comic.p12 {
+        width: 374px;
+        height: 244px;
+        background-position: 0 0;
+      }
       #comic.p3 {
         width: 362px;
         height: 244px;
@@ -94,16 +99,17 @@ example:  <a href="http://potch.github.io/dinocomix/?c=2498&p=6">http://potch.gi
           case 2:
             el.className = 'p2';
             break;
+          case 12:
+            el.className = 'p12';
+            break;
           case 3:
             el.className = 'p3';
             break;
           case 4:
             el.className = 'p4';
-            // el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 196, 487, 0)';
             break;
           case 5:
             el.className = 'p5';
-            // el.style.backgroundImage = '-moz-image-rect(' + url + ', 242, 494, 487, 194)';
             break;
           case 6:
             el.className = 'p6';
