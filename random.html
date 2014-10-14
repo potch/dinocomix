@@ -1,0 +1,131 @@
+<!-- Dinosaur Comics 10 Foot Status: A birthday present for Chris Lonnen -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>Dino Comix Viewer</title>
+    <style>
+      body {
+        background: #000;
+      }
+      #comic {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 735px;
+        height: 500px;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        font-size: 0;
+      }
+      .panel {
+        display: inline-block;
+      }
+      #comic .p1 {
+        width: 242px;
+        height: 244px;
+        background-position: 0 0;
+      }
+      #comic .p2 {
+        width: 132px;
+        height: 244px;
+        background-position: -242px 0;
+      }
+      #comic .p3 {
+        width: 360px;
+        height: 244px;
+        background-position: -373px 0;
+      }
+      #comic .p4 {
+        width: 194px;
+        height: 244px;
+        background-position: 0 -242px;
+      }
+      #comic .p5 {
+        width: 298px;
+        height: 244px;
+        background-position: -194px -242px;
+      }
+      #comic .p6 {
+        width: 243px;
+        height: 244px;
+        background-position: -492px -242px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="comic">
+      <div class="row">
+        <div class="panel p1"></div>
+        <div class="panel p2"></div>
+        <div class="panel p3"></div>
+      </div>
+      <div class="row">
+        <div class="panel p4"></div>
+        <div class="panel p5"></div>
+        <div class="panel p6"></div>
+      </div>
+    </div>
+
+
+    <script>
+      var xhr = new XMLHttpRequest();
+      xhr.onload = parse;
+      xhr.open('get', 'node_modules/qwantz-comics/dino.json');
+      xhr.send();
+
+      var comics;
+
+      function img(id) {
+        return 'url(http://www.qwantz.com/comics/comic2-' + id + '.png)';
+      }
+
+      function parse() {
+        comics = this.responseText;
+        try {
+          // console.log(this.responseText);
+          comics = JSON.parse(comics);
+          render();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      function render() {
+        var keys = Object.keys(comics);
+        var panels = document.querySelectorAll('.panel');
+        for (var i=0; i<panels.length; i++) {
+          var id = comics[keys[Math.random() * keys.length | 0]];
+          panels[i].style.backgroundImage = img(id);
+        }
+        setTimeout(rescaleImage, 0);
+      }
+
+      var el = document.querySelector('#comic');
+
+      function rescaleImage() {
+          var eWid = el.offsetWidth;
+          var eHgt = el.offsetHeight;
+          var wWid = window.innerWidth;
+          var wHgt = window.innerHeight;
+
+          if (eWid/eHgt > wWid / wHgt) {
+            var transform = 'translate(-50%,-50%) scale(' + wWid/eWid + ')';
+          } else {
+            var transform = 'translate(-50%,-50%) scale(' + wHgt/eHgt + ')';
+          }
+
+          el.style.transform = transform;
+          el.style.MozTransform = transform;
+          el.style.webkitTransform = transform;
+          el.style.msTransform = transform;
+      }
+
+    </script>
+  </body>
+</html>

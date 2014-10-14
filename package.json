@@ -9,6 +9,7 @@
   "author": "Potch",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "js-snippets": "0.0.2"
+    "js-snippets": "0.0.2",
+    "qwantz-comics": "^1.1.0"
   }
 }
